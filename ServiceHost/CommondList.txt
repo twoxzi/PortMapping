@@ -1,0 +1,4 @@
+﻿USER [userName] [password] 登录操作
+INFO 要求返回客户端的当前IP和端口
+LIST [TargetNodeXML] 获取目标的客户端列表
+OPEN [TargetNode] [Ip] [Port] 请求在目标节点开启目标IP和端口的端口映射

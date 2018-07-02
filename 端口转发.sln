@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortMap", "PortMap\PortMap.csproj", "{5E44BB2D-487B-464A-9DAA-3A29695512EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHost", "ServiceHost\ServiceHost.csproj", "{68C52E75-C7FA-4C97-8F4B-4F5CD68D1971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{31BCB5A4-A707-448A-9AFF-66FAC8E7CA9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{5E44BB2D-487B-464A-9DAA-3A29695512EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E44BB2D-487B-464A-9DAA-3A29695512EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E44BB2D-487B-464A-9DAA-3A29695512EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C52E75-C7FA-4C97-8F4B-4F5CD68D1971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C52E75-C7FA-4C97-8F4B-4F5CD68D1971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C52E75-C7FA-4C97-8F4B-4F5CD68D1971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C52E75-C7FA-4C97-8F4B-4F5CD68D1971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31BCB5A4-A707-448A-9AFF-66FAC8E7CA9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31BCB5A4-A707-448A-9AFF-66FAC8E7CA9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31BCB5A4-A707-448A-9AFF-66FAC8E7CA9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31BCB5A4-A707-448A-9AFF-66FAC8E7CA9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
