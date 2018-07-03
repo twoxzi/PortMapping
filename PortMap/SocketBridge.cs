@@ -15,7 +15,7 @@ namespace Twoxzi.PortMap
         private Thread thread2;
         
         private Boolean canRun;
-
+        private Int32 timeOut;
 
         public event Action<Exception> Stopped;
         /// <summary>
@@ -57,8 +57,8 @@ namespace Twoxzi.PortMap
         /// </summary>
         public Int32 BufferLength { get; private set; }
 
-        private Socket from;
-        private Socket to;
+        public Socket From { get; private set; }
+        public Socket To { get; private set; }
 
         /// <summary>
         /// 异步桥接Socket
@@ -66,11 +66,13 @@ namespace Twoxzi.PortMap
         /// <param name="from_Socket"></param>
         /// <param name="to_Socket"></param>
         /// <param name="bufferLength"></param>
-        public SocketBridge(Socket from_Socket, Socket to_Socket, Int32 bufferLength)
+        /// <param name="timeOut">超时(秒)</param>
+        public SocketBridge(Socket from_Socket, Socket to_Socket, Int32 bufferLength,Int32 timeOut=10)
         {
-            from = from_Socket;
-            to = to_Socket;
+            From = from_Socket;
+            To = to_Socket;
             BufferLength = bufferLength;
+            this.timeOut = timeOut;
         }
 
         /// <summary>
@@ -81,23 +83,26 @@ namespace Twoxzi.PortMap
         /// <param name="send_complete"></param>
         private void Working(Socket s1, Socket s2, Action<Byte[], UInt32> send_complete)
         {
+            Exception ex = null;
             try
             {
                 Byte[] buff = new Byte[BufferLength];
                 Int32 len = 0;
                 while(canRun && (len = s1.Receive(buff)) > 0)
                 {
-                    s1.Send(buff, len, SocketFlags.None);
+                    s2.Send(buff, len, SocketFlags.None);
                     send_complete(buff, (uint)len);
                 }
-            }catch (Exception ex)
+            }catch (Exception ex1)
             {
-                Console.WriteLine(ex.Message);
-                Stopped?.Invoke(ex);
+                
+                ex = ex1;
+                Console.WriteLine(ex1.Message);
             }
             finally
             {
                 canRun = false;
+                Stopped?.Invoke(ex);
             }
         }
 
@@ -106,9 +111,9 @@ namespace Twoxzi.PortMap
         /// </summary>
         public void Start()
         {
-            thread1 = new Thread(new ThreadStart(() => { Working(from, to, (buff,len) => { SendDataLength = SendDataLength + len; }); }));
+            thread1 = new Thread(new ThreadStart(() => { Working(From, To, (buff,len) => { SendDataLength = SendDataLength + len; }); }));
             thread1.IsBackground = true;
-            thread2 = new Thread(new ThreadStart(() => { Working(to, from, (buff,len) => ReceiveDataLength += len); }));
+            thread2 = new Thread(new ThreadStart(() => { Working(To, From, (buff,len) => ReceiveDataLength += len); }));
             thread2.IsBackground = true;
             canRun = true;
             thread1.Start();

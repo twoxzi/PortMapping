@@ -53,12 +53,21 @@ namespace Twoxzi.PortMap
 
         private Socket acceptSocket = null;
         
+        
 
         private Route()
         {
             
         }
 
+        /// <summary>
+        /// 创建一个侦听节点
+        /// </summary>
+        /// <param name="targetAddress"></param>
+        /// <param name="targetPort"></param>
+        /// <param name="localPort"></param>
+        /// <param name="buffSize"></param>
+        /// <returns></returns>
         public static Route CreateOrGetRoute(String targetAddress, Int32 targetPort, Int32 localPort, Int32 buffSize)
         {
             Route route;
@@ -157,6 +166,7 @@ namespace Twoxzi.PortMap
                     }
                 }
                 acceptSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                acceptSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 acceptSocket.Bind(new System.Net.IPEndPoint(IPAddress.Any, LocalPort));
                 acceptSocket.Listen(backlog);
                 acceptSocket.BeginAccept(onLocalConnected, new Object[] { acceptSocket });
@@ -186,7 +196,7 @@ namespace Twoxzi.PortMap
                 Console.WriteLine("In onLocalConnected");
                 Socket remote = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 remote.Connect(TargetAddress, TargetPort);
-
+                
                 SocketBridge worker = new SocketBridge(local, remote, BuffSize);// { parent = this };
                 worker.Stopped += (ex) => { WorkerList.Remove(worker);  Console.WriteLine(ex == null ? "正常退出" : ex.Message + ex.StackTrace); };
                 worker.Start();
